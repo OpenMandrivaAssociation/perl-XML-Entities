@@ -1,31 +1,28 @@
-%define upstream_name       XML-Entities
-%define version 0.0307
-%define release %mkrel 1
+%define upstream_name    XML-Entities
+%define upstream_version 1.0000
 
 Name:       perl-%{upstream_name}
-Version:    %{version}
-Release:    %{release}
-License:    GPL or Artistic
-Group:      Development/Perl
+Version:    %perl_convert_version %{upstream_version}
+Release:    %mkrel 1
+
 Summary:    Mapping of XML entities to Unicode
+License:    GPL+ or Artistic
+Group:      Development/Perl
 Url:        http://search.cpan.org/dist/%{upstream_name}
-Source:     http://www.cpan.org/modules/by-module/XML/%{upstream_name}-%{version}.tar.gz
-BuildRequires: perl-devel
+Source0:    http://www.cpan.org/modules/by-module/XML/%{upstream_name}-%{upstream_version}.tar.gz
+
 BuildRequires: perl(Carp)
 BuildRequires: perl(Fatal)
 BuildRequires: perl(File::Basename)
 BuildRequires: perl(LWP::UserAgent)
 BuildRequires: perl(Test::More)
+
 BuildArch: noarch
-BuildRoot:  %{_tmppath}/%{name}-%{version}
+BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}
 
 %description
+This module deals with decoding of strings with XML character entities.
 Based upon the HTML::Entities module by Gisle Aas
-
-This module deals with decoding of strings with XML character entities. The
-module provides two functions:
-
-* decode( $entity_set, $string, ... )
 
 %prep
 %setup -q -n %{upstream_name}
@@ -35,7 +32,7 @@ module provides two functions:
 %make
 
 %check
-make test
+%make test
 
 %install
 rm -rf %buildroot
@@ -46,9 +43,8 @@ rm -rf %buildroot
 
 %files
 %defattr(-,root,root)
-%doc README Changes
+%doc README Changes META.yml
 %{_bindir}/download-entities.pl
 %{perl_vendorlib}/XML
 %{_mandir}/man1/download-entities.pl.1*
 %{_mandir}/man3/*
-
